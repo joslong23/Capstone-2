@@ -57,6 +57,7 @@ ALTER TABLE project_employee ADD FOREIGN KEY (employee_id) REFERENCES employee(e
 
 
 -- Fill department and project before employee or project_employee because they have no foreign key dependencies
+
 INSERT INTO department (name) VALUES ('Department of Redundancy');
 INSERT INTO department (name) VALUES ('Network Administration');
 INSERT INTO department (name) VALUES ('Research and Development');
