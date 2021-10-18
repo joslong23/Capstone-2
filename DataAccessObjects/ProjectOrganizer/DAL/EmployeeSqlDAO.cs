@@ -1,6 +1,7 @@
 ﻿using ProjectOrganizer.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace ProjectOrganizer.DAL
 {
@@ -8,6 +9,13 @@ namespace ProjectOrganizer.DAL
     {
         private readonly string connectionString;
 
+        private readonly string SqlSelect =
+            "SELECT employee_id, department_id, first_name, last_name, job_title, birth_date, hire_date " +
+            "FROM employee;";
+
+        private readonly string SqlEmployeeSearch =
+            "SELECT employee_id, department_id, first_name, last_name, job_title, birth_date, hire_date " +
+            "FROM employee WHERE first_name = @first_name AND last_name = @last_name ;";
         // Single Parameter Constructor
         public EmployeeSqlDAO(string dbConnectionString)
         {
@@ -20,7 +28,39 @@ namespace ProjectOrganizer.DAL
         /// <returns>A list of all employees.</returns>
         public ICollection<Employee> GetAllEmployees()
         {
-            throw new NotImplementedException();
+            List<Employee> result = new List<Employee>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand(SqlSelect, conn);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read()) 
+                    {
+                        Employee employee = new Employee
+                        {
+                            EmployeeId = Convert.ToInt32(reader["employee_id"]),
+                            DepartmentId = Convert.ToInt32(reader["department_id"]),
+                            FirstName = Convert.ToString(reader["first_name"]),
+                            LastName = Convert.ToString(reader["last_name"]),
+                            JobTitle = Convert.ToString(reader["job_title"]),
+                            BirthDate = Convert.ToDateTime(reader["birth_date"]),
+                            HireDate = Convert.ToDateTime(reader["hire_date"])
+                        };
+                        result.Add(employee);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Couldn't obtain data from database: " + ex.Message);
+            }
+            return result;
         }
 
         /// <summary>
@@ -33,7 +73,41 @@ namespace ProjectOrganizer.DAL
         /// <returns>A list of employees that matches the search.</returns>
         public ICollection<Employee> Search(string firstname, string lastname)
         {
-            throw new NotImplementedException();
+            List<Employee> result = new List<Employee>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand(SqlEmployeeSearch, conn);
+                    command.Parameters.AddWithValue("@first_name", firstname);
+                    command.Parameters.AddWithValue("@last_name", lastname);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Employee employee = new Employee
+                        {
+                            EmployeeId = Convert.ToInt32(reader["employee_id"]),
+                            DepartmentId = Convert.ToInt32(reader["department_id"]),
+                            FirstName = Convert.ToString(reader["first_name"]),
+                            LastName = Convert.ToString(reader["last_name"]),
+                            JobTitle = Convert.ToString(reader["job_title"]),
+                            BirthDate = Convert.ToDateTime(reader["birth_date"]),
+                            HireDate = Convert.ToDateTime(reader["hire_date"])
+                        };
+                        result.Add(employee);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Couldn't obtain data from database: " + ex.Message);
+            }
+            return result;
         }
 
         /// <summary>
