@@ -12,7 +12,7 @@ namespace ProjectsTests
     public abstract class ProjectTestBase
     {
 
-        protected string ConnectionString { get; } = "Server=.\\SQLEXPRESS;Database=???;Trusted_Connection=True;";
+        protected string ConnectionString { get; } = "Server=.\\SQLEXPRESS;Database=EmployeeDB;Trusted_Connection=True;";
 
 
         private TransactionScope transaction;
