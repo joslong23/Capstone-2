@@ -17,7 +17,7 @@ namespace ProjectOrganizer.DAL
         private readonly string SqlEmployeeSearch =
             "SELECT employee_id, department_id, first_name, last_name, job_title, birth_date, hire_date " +
             "FROM employee WHERE first_name LIKE @first_name AND last_name LIKE @last_name;";
-        private readonly string SqlEmployeesNotOnProjects = "SELECT e.employee_id,first_name,last_name,job_title,birth_date,hire_date " +
+        private readonly string SqlEmployeesNotOnProjects = "SELECT e.employee_id,department_id,first_name,last_name,job_title,birth_date,hire_date " +
         "FROM employee e WHERE e.employee_id NOT IN (SELECT project_employee.employee_id FROM project_employee INNER JOIN employee ON project_employee.employee_id = e.employee_id)";
 
         // Single Parameter Constructor
@@ -137,7 +137,7 @@ namespace ProjectOrganizer.DAL
                         Employee employee = new Employee
                         {
                             EmployeeId = Convert.ToInt32(reader["employee_id"]),
-                           
+                            DepartmentId = Convert.ToInt32(reader["department_id"]),
                             FirstName = Convert.ToString(reader["first_name"]),
                             LastName = Convert.ToString(reader["last_name"]),
                             JobTitle = Convert.ToString(reader["job_title"]),

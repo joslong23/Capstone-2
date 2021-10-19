@@ -13,15 +13,15 @@ namespace ProjectOrganizer.DAL
 
         private readonly string SqlNewProject =
             "INSERT INTO " + "project(name, from_date, to_date) " +
-            "VALUES (@name , @from_date, @to_date)";
+            "VALUES (@name, @from_date, @to_date)";
 
         private readonly string SqlAssignEmployee =
             "INSERT INTO project_employee (project_id, employee_id) " +
-            "VALUES(@project_id, @employee_id);";
+            "VALUES (@project_id, @employee_id);";
 
         private readonly string SqlRemoveEmployee =
             "DELETE FROM project_employee (project_id, employee_id) " +
-            "VALUES(@project_id, @employee_id);";
+            "VALUES (@project_id, @employee_id);";
         // Single Parameter Constructor
         public ProjectSqlDAO(string dbConnectionString)
         {
@@ -84,6 +84,7 @@ namespace ProjectOrganizer.DAL
                     command.Parameters.AddWithValue("@project_id", projectId);
                     command.Parameters.AddWithValue("@employee_id", employeeId);
 
+                    command.ExecuteNonQuery();
 
 
                     return true;
@@ -115,6 +116,7 @@ namespace ProjectOrganizer.DAL
                     command.Parameters.AddWithValue("@project_id", projectId);
                     command.Parameters.AddWithValue("@employee_id", employeeId);
 
+                    command.ExecuteNonQuery();
 
 
                     return true;
