@@ -17,7 +17,8 @@ namespace ProjectOrganizer.DAL
 
         private readonly string SqlAssignEmployee =
             "INSERT INTO project_employee (project_id, employee_id) " +
-            "VALUES(@project_id, @employee_id);";
+            "VALUES(@project_id, @employee_id); ";
+            
 
         private readonly string SqlRemoveEmployee =
             "DELETE FROM project_employee (project_id, employee_id) " +
@@ -85,7 +86,7 @@ namespace ProjectOrganizer.DAL
                     command.Parameters.AddWithValue("@employee_id", employeeId);
 
 
-
+                    command.ExecuteNonQuery();
                     return true;
                 }
 
@@ -115,7 +116,7 @@ namespace ProjectOrganizer.DAL
                     command.Parameters.AddWithValue("@project_id", projectId);
                     command.Parameters.AddWithValue("@employee_id", employeeId);
 
-
+                    command.ExecuteNonQuery();
 
                     return true;
                 }
