@@ -9,11 +9,19 @@ namespace ProjectOrganizer.DAL
     {
         private readonly string connectionString;
         private readonly string SqlProjects =
-            "SELECT project_id, name, from_date, to_date " +"FROM project";
+            "SELECT project_id, name, from_date, to_date " + "FROM project";
+
         private readonly string SqlNewProject =
             "INSERT INTO " + "project(name, from_date, to_date) " +
             "VALUES (@name , @from_date, @to_date)";
 
+        private readonly string SqlAssignEmployee =
+            "INSERT INTO project_employee (project_id, employee_id) " +
+            "VALUES(@project_id, @employee_id);";
+
+        private readonly string SqlRemoveEmployee =
+            "DELETE FROM project_employee (project_id, employee_id) " +
+            "VALUES(@project_id, @employee_id);";
         // Single Parameter Constructor
         public ProjectSqlDAO(string dbConnectionString)
         {
@@ -66,7 +74,27 @@ namespace ProjectOrganizer.DAL
         /// <returns>If it was successful.</returns>
         public bool AssignEmployeeToProject(int projectId, int employeeId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand(SqlAssignEmployee, conn);
+                    command.Parameters.AddWithValue("@project_id", projectId);
+                    command.Parameters.AddWithValue("@employee_id", employeeId);
+
+
+
+                    return true;
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Could not add project: " + ex.Message);
+                return false;
+            }
         }
 
         /// <summary>
@@ -77,40 +105,59 @@ namespace ProjectOrganizer.DAL
         /// <returns>If it was successful.</returns>
         public bool RemoveEmployeeFromProject(int projectId, int employeeId)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Creates a new project.
-        /// </summary>
-        /// <param name="newProject">The new project object.</param>
-        /// <returns>The new id of the project.</returns>
-        public int CreateProject(Project newProject)
-        {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    SqlCommand command = new SqlCommand(SqlNewProject, conn);
-                    command.Parameters.AddWithValue("@name", newProject.Name);
-                    command.Parameters.AddWithValue("@from_date", newProject.StartDate);
-                    command.Parameters.AddWithValue("@to_date", newProject.EndDate);
-                    //command.ExecuteNonQuery();
+                    SqlCommand command = new SqlCommand(SqlRemoveEmployee, conn);
+                    command.Parameters.AddWithValue("@project_id", projectId);
+                    command.Parameters.AddWithValue("@employee_id", employeeId);
 
-                    int id = Convert.ToInt32(command.ExecuteScalar());
 
-                    return id;
+
+                    return true;
                 }
 
             }
             catch (SqlException ex)
             {
                 Console.WriteLine("Could not add project: " + ex.Message);
-                return -1;
+                return false;
             }
-        }
+        }    
 
+    /// <summary>
+    /// Creates a new project.
+    /// </summary>
+    /// <param name="newProject">The new project object.</param>
+    /// <returns>The new id of the project.</returns>
+    public int CreateProject(Project newProject)
+    {
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand(SqlNewProject, conn);
+                command.Parameters.AddWithValue("@name", newProject.Name);
+                command.Parameters.AddWithValue("@from_date", newProject.StartDate);
+                command.Parameters.AddWithValue("@to_date", newProject.EndDate);
+                //command.ExecuteNonQuery();
+
+                int id = Convert.ToInt32(command.ExecuteScalar());
+
+                return id;
+            }
+
+        }
+        catch (SqlException ex)
+        {
+            Console.WriteLine("Could not add project: " + ex.Message);
+            return -1;
+        }
     }
+}
 }

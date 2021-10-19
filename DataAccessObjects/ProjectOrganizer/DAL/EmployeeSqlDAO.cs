@@ -137,7 +137,7 @@ namespace ProjectOrganizer.DAL
                         Employee employee = new Employee
                         {
                             EmployeeId = Convert.ToInt32(reader["employee_id"]),
-                            DepartmentId = Convert.ToInt32(reader["department_id"]),
+                           
                             FirstName = Convert.ToString(reader["first_name"]),
                             LastName = Convert.ToString(reader["last_name"]),
                             JobTitle = Convert.ToString(reader["job_title"]),
