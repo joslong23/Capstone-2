@@ -87,7 +87,6 @@ namespace ProjectOrganizer.DAL
 
                     command.ExecuteNonQuery();
 
-                    command.ExecuteNonQuery();
                     return true;
                 }
 
@@ -126,7 +125,7 @@ namespace ProjectOrganizer.DAL
             }
             catch (SqlException ex)
             {
-                Console.WriteLine("Could not add project: " + ex.Message);
+                Console.WriteLine("Could not remove employee from project: " + ex.Message);
                 return false;
             }
         }    
@@ -158,7 +157,7 @@ namespace ProjectOrganizer.DAL
         }
         catch (SqlException ex)
         {
-            Console.WriteLine("Could not add project: " + ex.Message);
+            Console.WriteLine("Could not create project: " + ex.Message);
             return -1;
         }
     }
