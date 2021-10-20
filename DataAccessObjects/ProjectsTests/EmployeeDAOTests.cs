@@ -17,10 +17,10 @@ namespace ProjectsTests
         {
             // Arrange
             EmployeeSqlDAO dao = new EmployeeSqlDAO(this.ConnectionString);
-            
+
             // Act
             IEnumerable<Employee> result = dao.GetAllEmployees();
-            
+
             // Assert
 
             Assert.IsNotNull(result);
@@ -80,9 +80,29 @@ namespace ProjectsTests
         [TestMethod]
         public void EmployeeSearchShouldReturnEmployee()
         {
+            // Arrange
             EmployeeSqlDAO dao = new EmployeeSqlDAO(ConnectionString);
 
-            Assert.Inconclusive();
+            // Act
+            ICollection<Employee> employees = dao.Search("John", "Doe");
+
+            Employee tester = new Employee();
+
+            foreach (var employee in employees)
+            {
+                tester.EmployeeId = employee.EmployeeId;
+                tester.BirthDate = employee.BirthDate;
+                tester.DepartmentId = employee.DepartmentId;
+                tester.FirstName = employee.FirstName;
+                tester.LastName = employee.LastName;
+                tester.HireDate = employee.HireDate;
+                tester.JobTitle = employee.JobTitle;
+
+                break;
+            }
+
+            // Assert
+            Assert.AreEqual(1, tester.EmployeeId);
         }
     }
 }
