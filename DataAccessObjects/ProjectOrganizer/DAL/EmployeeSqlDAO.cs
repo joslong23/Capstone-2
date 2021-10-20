@@ -154,6 +154,5 @@ namespace ProjectOrganizer.DAL
             }
             return result;
         }
-
     }
 }

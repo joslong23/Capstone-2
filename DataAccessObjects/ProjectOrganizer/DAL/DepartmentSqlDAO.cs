@@ -16,11 +16,9 @@ namespace ProjectOrganizer.DAL
             "FROM department";
 
         private const string SqlInsert =
-            //"SET IDENTITY_INSERT department ON " +
             "INSERT INTO " +
             "department (name) " + "VALUES (@name); " +
             "SELECT @@IDENTITY;";
-        //"SET IDENTITY_INSERT department OFF";
 
         private const string SqlUpdate =
             "UPDATE " +
@@ -30,7 +28,6 @@ namespace ProjectOrganizer.DAL
             "WHERE " +
             "department_id = @department_id";
 
-        // Single Parameter Constructor
         public DepartmentSqlDAO(string dbConnectionString)
         {
             connectionString = dbConnectionString;
@@ -90,8 +87,6 @@ namespace ProjectOrganizer.DAL
                     SqlCommand command = new SqlCommand(SqlInsert, conn);
                     command.Parameters.AddWithValue("@name", newDepartment.Name);
 
-                    //command.ExecuteNonQuery();
-
                     int id = Convert.ToInt32(command.ExecuteScalar());
 
                     return id;
@@ -121,7 +116,6 @@ namespace ProjectOrganizer.DAL
                     SqlCommand command = new SqlCommand(SqlUpdate, conn);
                     command.Parameters.AddWithValue("@name", updatedDepartment.Name);
                     command.Parameters.AddWithValue("@department_id", updatedDepartment.Id);
-                    //command.ExecuteNonQuery();
 
                     int id = Convert.ToInt32(command.ExecuteScalar());
 
