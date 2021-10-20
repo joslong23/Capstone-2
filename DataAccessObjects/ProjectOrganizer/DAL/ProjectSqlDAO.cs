@@ -13,7 +13,12 @@ namespace ProjectOrganizer.DAL
 
         private readonly string SqlNewProject =
             "INSERT INTO " + "project(name, from_date, to_date) " +
+<<<<<<< HEAD
             "VALUES (@name, @from_date, @to_date); SELECT @@IDENTITY;";
+=======
+            "VALUES (@name, @from_date, @to_date); "+
+            "SELECT @@IDENTITY;";
+>>>>>>> 2c928586f2a521233bfd92e33d985647662325c1
 
         private readonly string SqlAssignEmployee =
             "INSERT INTO project_employee (project_id, employee_id) " +
