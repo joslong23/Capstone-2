@@ -153,6 +153,7 @@ namespace ProjectOrganizer.DAL
                 Console.WriteLine("Couldn't obtain data from database: " + ex.Message);
             }
             return result;
+            result.
         }
 
     }
