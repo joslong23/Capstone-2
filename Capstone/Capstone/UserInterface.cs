@@ -32,13 +32,13 @@ namespace Capstone
 
         private readonly string connectionString;
 
-        private readonly VenueDAO venueDAO;
+        private readonly VenueSqlDAO venueDAO;
 
 
         public UserInterface(string connectionString)
         {
             this.connectionString = connectionString;
-            venueDAO = new VenueDAO(connectionString);
+            venueDAO = new VenueSqlDAO(connectionString);
         }
 
         public void Run()
