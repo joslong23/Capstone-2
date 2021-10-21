@@ -16,8 +16,13 @@ namespace Capstone.Models
         public int VenueCityId { get; set; }
         //Venue description
         public string VenueDescription { get; set; }
+        /// <summary>
+        /// Venue Category
+        /// </summary>
+        public string VenueCategory { get; set; }
 
+        public string VenueCity { get; set; }
 
-
+        public string VenueState { get; set; }
     }
 }
