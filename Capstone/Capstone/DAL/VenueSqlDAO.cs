@@ -81,8 +81,5 @@ namespace Capstone.DAL
             }
         }
 
-
-
-
     }
 }
