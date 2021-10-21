@@ -1,4 +1,5 @@
 ﻿using Capstone.DAL;
+using Capstone.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,37 +23,38 @@ namespace Capstone
     public class UserInterface
     {
         const string Command_ListVenues = "1";
+        const string Command_SelectVenues = "2";
         const string Command_ViewSpaces = "1";
         const string Command_SearchForReservation = "2";
         const string Command_ReturnToPreviousScreen = "R";
         const string Command_ReserveSpace = "1";
         const string Command_Quit = "Q";
 
-
-
-        private readonly string connectionString;
-
         private readonly VenueSqlDAO venueDAO;
 
 
-        public UserInterface(string connectionString)
+        public UserInterface(VenueSqlDAO venueDAO)
         {
-            this.connectionString = connectionString;
-            venueDAO = new VenueSqlDAO(connectionString);
+            this.venueDAO = venueDAO;
         }
 
         public void Run()
         {
             PrintMainMenu();
 
-            string input = Console.ReadLine();
-
             while (true)
             {
+                string input = Console.ReadLine();
+
+                Console.Clear();
 
                 switch (input.ToUpper())
                 {
                     case Command_ListVenues:
+                        GetAllVenues();
+                        SelectVenue();
+                        break;
+                    case Command_SelectVenues:
                         break;
                     case Command_Quit:
                         Console.WriteLine("Thank you for using Excelsior Venues");
@@ -70,22 +72,33 @@ namespace Capstone
         {
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1) List Venues");
+            Console.WriteLine("2) Select Venue");
             Console.WriteLine("Q) Quit Program");
         }
 
         private void GetAllVenues()
         {
-            /* List<VenueDAO> venues = VenueSqlDAO.GetAllVenues();
+           List<Venue> venues = venueDAO.GetAllVenues();
              
-            if (venues.Count > 0)
-            {
-                foreach (Venue ven in venues)
+           if (venues.Count > 0)
+           {
+                foreach(Venue ven in venues)
                 {
-                    Console.WriteLine()
-
-
-            */
+                    Console.WriteLine($"{ven.VenueId}) {ven.VenueName} ");
+                }
+                Console.WriteLine();
+           }
+            else
+            {
+                Console.WriteLine("*** No Results ***");
+            }
         }
 
+        private void SelectVenue()
+        {
+            int venueID = CLIHelper.GetInteger("Which Venue would you like to view? ");
+            
+
+        }
     }
 }
