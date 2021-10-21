@@ -24,8 +24,9 @@ namespace Capstone
             string connectionString = configuration.GetConnectionString("Project");
 
             VenueSqlDAO venueDAO = new VenueSqlDAO(connectionString);
+            SpaceSqlDAO spaceDAO = new SpaceSqlDAO(connectionString);
 
-            UserInterface ui = new UserInterface(venueDAO);
+            UserInterface ui = new UserInterface(venueDAO, spaceDAO);
             ui.Run();
 
         }

@@ -2,6 +2,7 @@
 using Capstone.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Capstone
@@ -32,10 +33,12 @@ namespace Capstone
 
         private readonly VenueSqlDAO venueDAO;
 
+        private readonly SpaceSqlDAO spaceDAO;
 
-        public UserInterface(VenueSqlDAO venueDAO)
+        public UserInterface(VenueSqlDAO venueDAO, SpaceSqlDAO spaceDAO)
         {
             this.venueDAO = venueDAO;
+            this.spaceDAO = spaceDAO;
         }
 
         public void Run()
@@ -132,12 +135,53 @@ namespace Capstone
             Console.WriteLine("2) Search for Reservation");
             Console.WriteLine("R) Return to Previous Screen");
             Console.WriteLine();
-    
+
+            string input = CLIHelper.GetString("");
+
+            int intValue;
+
+            if (input.Contains("r") || input.Contains("R"))
+            {
+                return;
+            }
+            else if (input == "1")
+            {
+                ViewSpaces(venue.VenueId);
+            }
+
         }
 
-        private void ViewSpaces()
+        private void ViewSpaces(int venueID)
         {
-            
+            List<Spaces> spaces = spaceDAO.GetVenueSpaces(venueID);
+
+            Console.WriteLine("Name---- ---- ---- Open ---- Close ---- Daily Rate ---- Max. Occupancy");
+
+            foreach (Spaces space in spaces)
+            {
+                Console.WriteLine($"#{space.SpaceId} ---- {space.SpaceName} ---- ---- {space.SpaceOpenFrom} ---- {space.SpaceOpenTo} ---- {space.SpaceDailyRate} ---- {space.SpaceMaxOccupancy}");
+            }
+            Console.WriteLine("\n");
+            Console.WriteLine("What would you like to do next?");
+            Console.WriteLine("    1) Reserve a Space \n    R) Return to Previous Screen ");
+
+            string input = CLIHelper.GetString("");
+
+
+            if (input.Contains("r") || input.Contains("R"))
+            {
+                return;
+            }
+            else if (input == "1")
+            {
+                int space = spaces.First().SpaceId;
+                ReserveSpace(space);
+            }
+        }
+
+        private void ReserveSpace(int spaceID)
+        {
+
         }
 
     }

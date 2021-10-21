@@ -9,7 +9,6 @@ namespace Capstone.Models
 
         public int SpaceId { get; set; }
 
-
         public string SpaceName { get; set; }
 
         public bool SpaceIsAccessible { get; set; }
