@@ -34,7 +34,14 @@ namespace Capstone
         public void Run()
         {
             Console.WriteLine("Reached the User Interface.");
-            Console.ReadLine();
+           string input= Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    venueDAO.GetAllVenues();
+                    break;
+            }
         }
     }
 }

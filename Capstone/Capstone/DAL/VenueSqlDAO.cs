@@ -40,8 +40,7 @@ namespace Capstone.DAL
                         {
                             VenueId = Convert.ToInt32(reader["id"]),
                             VenueName = Convert.ToString(reader["name"]),
-                            VenueCityId = Convert.ToInt32(reader["city_id"]),
-                            VenueDescription = Convert.ToString(reader["description"])
+                           
                         };
                         venues.Add(venue);
                     }
