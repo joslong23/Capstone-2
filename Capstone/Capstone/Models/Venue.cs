@@ -21,5 +21,8 @@ namespace Capstone.Models
         /// </summary>
         public string VenueCategory { get; set; }
 
+        public string VenueCity { get; set; }
+
+        public string VenueState { get; set; }
     }
 }

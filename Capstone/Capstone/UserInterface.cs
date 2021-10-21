@@ -40,6 +40,7 @@ namespace Capstone
 
         public void Run()
         {
+
             PrintMainMenu();
 
             while (true)
@@ -54,8 +55,7 @@ namespace Capstone
                         GetAllVenues();
                         SelectVenue();
                         break;
-                    case Command_SelectVenues:
-                        break;
+                  
                     case Command_Quit:
                         Console.WriteLine("Thank you for using Excelsior Venues");
                         return;
@@ -72,7 +72,6 @@ namespace Capstone
         {
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1) List Venues");
-            Console.WriteLine("2) Select Venue");
             Console.WriteLine("Q) Quit Program");
         }
 
@@ -96,9 +95,50 @@ namespace Capstone
 
         private void SelectVenue()
         {
-            int venueID = CLIHelper.GetInteger("Which Venue would you like to view? ");
-            
+            string venueID = CLIHelper.GetString("Which Venue would you like to view? ");
+            int intValue;
+            List<Venue> venues  = venueDAO.GetAllVenues();
 
+            if (venueID.Contains("r") || venueID.Contains("R")) 
+            {
+                return;
+            }
+            else
+            {
+                intValue = int.Parse(venueID);
+                foreach(Venue ven in venues)
+                {
+                    if(intValue == ven.VenueId)
+                    {
+                        DisplayVenueDetails(ven);
+                    }
+                }
+            }
         }
+
+        private void DisplayVenueDetails(Venue venue)
+        {
+            Console.WriteLine($"{venue.VenueName}");
+            Console.WriteLine($"Location: {venue.VenueCity}, {venue.VenueState}");
+            Console.WriteLine($"Categories: {venue.VenueCategory}");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Description: ");
+            Console.WriteLine($"{venue.VenueDescription}");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("What would you like to do next?");
+            Console.WriteLine("1) View Spaces");
+            Console.WriteLine("2) Search for Reservation");
+            Console.WriteLine("R) Return to Previous Screen");
+            Console.WriteLine();
+    
+        }
+
+        private void ViewSpaces()
+        {
+            
+        }
+
     }
 }

@@ -16,13 +16,23 @@ namespace Capstone.DAL
         private readonly string SqlVenueList =
             "SELECT " +
             "v.id, " +
+            "v.name, "+ 
+            "STRING_AGG(ISNULL(c.name, ' '), ', ') AS categoryName, " +
+            "v.description, " + "cy.name AS cityName, "+ 
+            "s.name AS stateName "+
+            "FROM " +
+            "venue v " + 
+            "LEFT OUTER JOIN category_venue cv ON v.id=cv.venue_id " +
+            "LEFT OUTER JOIN category c ON c.id = cv.category_id " +
+            "INNER JOIN city cy ON cy.id = v.city_id " +
+            "INNER JOIN state s ON s.abbreviation = cy.state_abbreviation " +
+            "GROUP BY " + 
+            "v.id, " +
             "v.name, " +
-            "STRING_AGG( ISNULL(c.name, ' '), ', ') AS categoryName, " +
-            "v.description " +
-            "FROM venue v " +
-            "INNER JOIN category_venue cv ON v.id=cv.venue_id " +
-            "INNER JOIN category c ON c.id = cv.category_id " +
-            "GROUP BY v.id, v.name, v.description";
+            "v.description, " +
+            "cy.name, " +
+            "s.name "; 
+           
 
         public VenueSqlDAO (string connectionString)
         {
@@ -74,7 +84,9 @@ namespace Capstone.DAL
                         VenueId = Convert.ToInt32(reader["id"]),
                         VenueName = Convert.ToString(reader["name"]),
                         VenueCategory = Convert.ToString(reader["categoryName"]),
-                        VenueDescription = Convert.ToString(reader["description"])
+                        VenueDescription = Convert.ToString(reader["description"]),
+                        VenueCity = Convert.ToString(reader["cityName"]),
+                        VenueState = Convert.ToString(reader["stateName"])
                     };
                     venues.Add(venue);
                 }
