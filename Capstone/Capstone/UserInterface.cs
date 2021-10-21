@@ -21,9 +21,19 @@ namespace Capstone
     /// </remarks>
     public class UserInterface
     {
+        const string Command_ListVenues = "1";
+        const string Command_ViewSpaces = "1";
+        const string Command_SearchForReservation = "2";
+        const string Command_ReturnToPreviousScreen = "R";
+        const string Command_ReserveSpace = "1";
+        const string Command_Quit = "Q";
+
+
+
         private readonly string connectionString;
 
         private readonly VenueDAO venueDAO;
+
 
         public UserInterface(string connectionString)
         {
@@ -33,8 +43,49 @@ namespace Capstone
 
         public void Run()
         {
-            Console.WriteLine("Reached the User Interface.");
-            Console.ReadLine();
+            PrintMainMenu();
+
+            string input = Console.ReadLine();
+
+            while (true)
+            {
+
+                switch (input.ToUpper())
+                {
+                    case Command_ListVenues:
+                        break;
+                    case Command_Quit:
+                        Console.WriteLine("Thank you for using Excelsior Venues");
+                        return;
+                    default:
+                        Console.WriteLine("The command provided was not a valid command, please try again.");
+                        break;
+                }
+
+                PrintMainMenu();
+            }
         }
+
+        private void PrintMainMenu()
+        {
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("1) List Venues");
+            Console.WriteLine("Q) Quit Program");
+        }
+
+        private void GetAllVenues()
+        {
+            /* List<VenueDAO> venues = VenueSqlDAO.GetAllVenues();
+             
+            if (venues.Count > 0)
+            {
+                foreach (Venue ven in venues)
+                {
+                    Console.WriteLine()
+
+
+            */
+        }
+
     }
 }
