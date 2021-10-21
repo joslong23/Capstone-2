@@ -17,15 +17,15 @@ namespace ProjectsTests
         {
             // Arrange
             EmployeeSqlDAO dao = new EmployeeSqlDAO(this.ConnectionString);
+
             // Act
             IEnumerable<Employee> result = dao.GetAllEmployees();
+
             // Assert
 
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
         }
-
-
 
         [TestMethod]
 
@@ -35,13 +35,9 @@ namespace ProjectsTests
 
             bool result = dao.AssignEmployeeToProject(1, 2);
 
-
             Assert.IsTrue(result);
             Assert.AreEqual(2, GetRowCount("project_employee"));
-
         }
-
-
 
         [TestMethod]
 
@@ -51,14 +47,62 @@ namespace ProjectsTests
 
             bool result = dao.RemoveEmployeeFromProject(1, 1);
 
-
             Assert.IsTrue(result);
             Assert.AreEqual(0, GetRowCount("project_employee"));
         }
 
+        [TestMethod]
+        public void GetEmployeeNotAssignedToProjectShouldReturnCorrectEmployees()
+        {
+            // Arrange
+            EmployeeSqlDAO dao = new EmployeeSqlDAO(ConnectionString);
 
+            // Act
+            ICollection<Employee> employees = dao.GetEmployeesWithoutProjects();
 
+            Employee tester = new Employee();
+
+            foreach (var employee in employees)
+            {
+                tester.EmployeeId = employee.EmployeeId;
+                tester.BirthDate = employee.BirthDate;
+                tester.DepartmentId = employee.DepartmentId;
+                tester.FirstName = employee.FirstName;
+                tester.LastName = employee.LastName;
+                tester.HireDate = employee.HireDate;
+                tester.JobTitle = employee.JobTitle;
+            }
+
+            // Assert
+            Assert.AreEqual(2, tester.EmployeeId);
+        }
+
+        [TestMethod]
+        public void EmployeeSearchShouldReturnEmployee()
+        {
+            // Arrange
+            EmployeeSqlDAO dao = new EmployeeSqlDAO(ConnectionString);
+
+            // Act
+            ICollection<Employee> employees = dao.Search("John", "Doe");
+
+            Employee tester = new Employee();
+
+            foreach (var employee in employees)
+            {
+                tester.EmployeeId = employee.EmployeeId;
+                tester.BirthDate = employee.BirthDate;
+                tester.DepartmentId = employee.DepartmentId;
+                tester.FirstName = employee.FirstName;
+                tester.LastName = employee.LastName;
+                tester.HireDate = employee.HireDate;
+                tester.JobTitle = employee.JobTitle;
+
+                break;
+            }
+
+            // Assert
+            Assert.AreEqual(1, tester.EmployeeId);
+        }
     }
-
-
 }

@@ -9,24 +9,23 @@ namespace ProjectsTests
     [TestClass]
     public class ProjectDAOTests : ProjectTestBase
     {
-      
         [TestMethod]
         public void GetProjects_Should_ReturnCorrectProjectCount()
         {
             // Arrange
             ProjectSqlDAO dao = new ProjectSqlDAO(this.ConnectionString);
+            
             // Act
             IEnumerable<Project> result = dao.GetAllProjects();
+            
             // Assert
-
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count());
-
         }
 
         [TestMethod]
 
-        public void AddProjects_Should_IncreaseProjectCount()
+        public void CreateProjects_Should_IncreaseProjectCount()
         {
             ProjectSqlDAO dao = new ProjectSqlDAO(this.ConnectionString);
 
@@ -40,10 +39,5 @@ namespace ProjectsTests
             Assert.IsTrue(id > 1, "Added project is not valid");
             Assert.AreEqual(2, GetRowCount("project"));
         }
-
-      
-
-
-
     }
 }

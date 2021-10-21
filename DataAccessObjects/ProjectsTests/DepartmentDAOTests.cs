@@ -41,5 +41,23 @@ namespace ProjectsTests
             Assert.AreEqual(2, GetRowCount("department"));
         }
 
+        [TestMethod]
+        public void UpdateDepartmentShouldReturnNewDepartmentName()
+        {
+            // Arrange
+            DepartmentSqlDAO dao = new DepartmentSqlDAO(this.ConnectionString);
+            Department department = new Department();
+            department.Name = "test";
+            department.Id = 1;
+
+            // Act
+            bool result = dao.UpdateDepartment(department);
+            string expectedName = GetRowName("name", "department");
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(expectedName, "test");
+
+        }
     }
 }

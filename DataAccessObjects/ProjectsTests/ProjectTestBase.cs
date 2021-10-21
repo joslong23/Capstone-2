@@ -11,9 +11,7 @@ namespace ProjectsTests
     [TestClass]
     public abstract class ProjectTestBase
     {
-
         protected string ConnectionString { get; } = "Server=.\\SQLEXPRESS;Database=EmployeeDB;Trusted_Connection=True;";
-
 
         private TransactionScope transaction;
 
@@ -57,5 +55,16 @@ namespace ProjectsTests
             }
         }
 
+        protected string GetRowName(string columanName, string table )
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"SELECT {columanName} FROM {table}", conn);
+                string result = Convert.ToString(cmd.ExecuteScalar());
+
+                return result;
+            }
+        }
     }
 }
