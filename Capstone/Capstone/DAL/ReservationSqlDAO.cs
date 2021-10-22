@@ -21,15 +21,9 @@ namespace Capstone.DAL
             "INNER JOIN space s ON s.id = r.space_id " +
             "INNER JOIN venue v ON v.id = s.venue_id " +
             "WHERE r.reservation_id = @reservation_id";
-
-        private readonly string SqlMaxOccupancyCheck =
-            "SELECT s.max_occupancy " +
-            "FROM space s " +
-            "INNER JOIN reservation r ON r.space_id = s.id  " +
-            "WHERE s.id = @space_id; ";
         private readonly string SqlDateCheck =
             "SELECT start_date , end_date FROM reservation WHERE space_id = @space_id AND @start_date AND NOT BETWEEN start_date AND end_date; ";
-
+        
         private readonly string SqlAvailableSpaceList =
            "SELECT DISTINCT " +
             "s.id, " +
@@ -43,6 +37,8 @@ namespace Capstone.DAL
             "WHERE v.id = @venue_id AND r.start_date NOT BETWEEN @start_date AND @end_date " +
             "AND r.end_date NOT BETWEEN @start_date AND @end_date " +
             "OR r.end_date IS NULL AND v.id = @venue_id AND s.max_occupancy >= @number_of_attendees;";
+
+        private readonly string SqlDebug = "SELECT DISTINCT s.id, s.name, s.daily_rate, s.max_occupancy, s.is_accessible FROM space s LEFT OUTER JOIN reservation r ON s.id = r.space_id LEFT OUTER JOIN venue v ON v.id = s.venue_id WHERE v.id = 1 AND r.start_date NOT BETWEEN '2021-10-15' AND '2021-10-20' AND r.end_date NOT BETWEEN '2021-10-15' AND '2021-10-20' OR r.end_date IS NULL AND v.id = 1";
         public ReservationSqlDAO(string connectionString)
         {
             this.connectionString = connectionString;
@@ -59,10 +55,10 @@ namespace Capstone.DAL
                 {
                     conn.Open();
 
-                    SqlCommand command = new SqlCommand(SqlAvailableSpaceList, conn);
+                    SqlCommand command = new SqlCommand(SqlDebug, conn);
                     command.Parameters.AddWithValue("@venue_id", venueID);
-                    command.Parameters.AddWithValue("@start_date", startDate);
-                    command.Parameters.AddWithValue("@end_date", endDate);
+                    command.Parameters.AddWithValue("@start_date", "2021-10-15");
+                    command.Parameters.AddWithValue("@end_date", "2021-10-20");
                     command.Parameters.AddWithValue("@number_of_attendees", guestCount);
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -158,7 +154,7 @@ namespace Capstone.DAL
 
 
 
-        public Reservation ReserveSpace(DateTime startDate, DateTime endDate, int numberOfGuests, string reservationName, int spaceId)
+        /*public Reservation ReserveSpace(DateTime startDate, DateTime endDate, int numberOfGuests, string reservationName, int spaceId)
         {
             Reservation reservation = new Reservation();
             try
@@ -219,6 +215,6 @@ namespace Capstone.DAL
             }
 
             return reservation;
-        }
+        }*/
     }
 }
