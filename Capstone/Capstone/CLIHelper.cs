@@ -96,10 +96,5 @@ namespace Capstone
 
             return userInput;
         }
-
-        public static string GetAbbreviatedMonthName(int month)
-        {
-            return CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month);
-        }
     }
 }

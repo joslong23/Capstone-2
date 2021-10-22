@@ -35,10 +35,12 @@ namespace Capstone
 
         private readonly SpaceSqlDAO spaceDAO;
 
-        public UserInterface(VenueSqlDAO venueDAO, SpaceSqlDAO spaceDAO)
+        private readonly ReservationSqlDAO reservationDAO;
+        public UserInterface(VenueSqlDAO venueDAO, SpaceSqlDAO spaceDAO, ReservationSqlDAO reservationDAO)
         {
             this.venueDAO = venueDAO;
             this.spaceDAO = spaceDAO;
+            this.reservationDAO = reservationDAO;
         }
 
         public void Run()
@@ -185,6 +187,25 @@ namespace Capstone
 
         private void ReserveSpace(int spaceID)
         {
+
+            DateTime reservedDate = CLIHelper.GetDateTime("Enter the date you would like to Reserve: ");
+
+            int daysNeeded = CLIHelper.GetInteger("How many days will you be reserving?: ");
+
+            DateTime reservationEndDate = reservedDate.AddDays(daysNeeded);
+            
+            int attendanceCount = CLIHelper.GetInteger("How many guests will be attending?: ");
+
+            string reservingParty = CLIHelper.GetString("Who is the reserving Person or Party?: ");
+            Console.WriteLine("The following spaces are available based on your needs: ");
+
+
+
+
+
+            reservationDAO.ReserveSpace(reservedDate, reservationEndDate, attendanceCount, reservingParty, spaceID);
+
+            
 
         }
 
