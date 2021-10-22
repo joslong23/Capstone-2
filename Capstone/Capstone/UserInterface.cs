@@ -193,7 +193,7 @@ namespace Capstone
             int daysNeeded = CLIHelper.GetInteger("How many days will you be reserving?: ");
 
             DateTime reservationEndDate = reservedDate.AddDays(daysNeeded);
-            
+
             int attendanceCount = CLIHelper.GetInteger("How many guests will be attending?: ");
 
             List<Spaces> availableSpaces = reservationDAO.GetAvailableReservations(reservedDate, reservationEndDate, daysNeeded, attendanceCount, venueID);
@@ -204,7 +204,7 @@ namespace Capstone
             {
                 string isAccesible;
 
-                if(space.SpaceIsAccessible == true)
+                if (space.SpaceIsAccessible == true)
                 {
                     isAccesible = "Yes";
                 }
@@ -217,7 +217,7 @@ namespace Capstone
             }
 
             int spaceID = CLIHelper.GetInteger("Which space would you like to reserve (enter 0 to cancel)? ");
-            
+
             string reservingParty = CLIHelper.GetString("Who is the reserving Person or Party?: ");
 
             Reservation reservation = reservationDAO.MakeReservation(reservedDate, reservationEndDate, attendanceCount, daysNeeded, venueID, reservingParty);
@@ -233,5 +233,6 @@ namespace Capstone
             Console.WriteLine($"Depart Date: {reservation.ReservationEndDate}");
             Console.WriteLine($"Total Cost: {reservation.TotalCost}");
         }
+
     }
 }
