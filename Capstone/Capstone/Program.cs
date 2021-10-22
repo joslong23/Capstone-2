@@ -25,8 +25,9 @@ namespace Capstone
 
             VenueSqlDAO venueDAO = new VenueSqlDAO(connectionString);
             SpaceSqlDAO spaceDAO = new SpaceSqlDAO(connectionString);
+            ReservationSqlDAO reservationDAO = new ReservationSqlDAO(connectionString);
 
-            UserInterface ui = new UserInterface(venueDAO, spaceDAO);
+            UserInterface ui = new UserInterface(venueDAO, spaceDAO, reservationDAO);
             ui.Run();
 
         }
