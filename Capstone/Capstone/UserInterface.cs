@@ -181,11 +181,11 @@ namespace Capstone
             else if (input == "1")
             {
                 int space = spaces.First().SpaceId;
-                ReserveSpace(venueID);
+                ReserveSpace(space);
             }
         }
 
-        private void ReserveSpace(int venueID)
+        private void ReserveSpace(int spaceID)
         {
 
             DateTime reservedDate = CLIHelper.GetDateTime("Enter the date you would like to Reserve: ");
@@ -196,42 +196,18 @@ namespace Capstone
             
             int attendanceCount = CLIHelper.GetInteger("How many guests will be attending?: ");
 
-            List<Spaces> availableSpaces = reservationDAO.GetAvailableReservations(reservedDate, reservationEndDate, daysNeeded, attendanceCount, venueID);
-
+            string reservingParty = CLIHelper.GetString("Who is the reserving Person or Party?: ");
             Console.WriteLine("The following spaces are available based on your needs: ");
 
-            foreach (Spaces space in availableSpaces)
-            {
-                string isAccesible;
-
-                if(space.SpaceIsAccessible == true)
-                {
-                    isAccesible = "Yes";
-                }
-                else
-                {
-                    isAccesible = "No";
-                }
-
-                Console.WriteLine($"{space.SpaceId}    {space.SpaceName}    {space.SpaceDailyRate}    {space.SpaceMaxOccupancy}    {isAccesible}    {space.TotalCost}");
-            }
-
-            int spaceID = CLIHelper.GetInteger("Which space would you like to reserve (enter 0 to cancel)? ");
             
-            string reservingParty = CLIHelper.GetString("Who is the reserving Person or Party?: ");
 
-            Reservation reservation = reservationDAO.MakeReservation(reservedDate, reservationEndDate, attendanceCount, daysNeeded, venueID, reservingParty);
 
-            Console.WriteLine("Thank you for submitting your reservation! The dedtails for your event are listed below:");
-            Console.WriteLine("\n");
-            Console.WriteLine($"Confirmation #: {reservation.ReservationId}");
-            Console.WriteLine($"Venue: {reservation.ReservationVenueName}");
-            Console.WriteLine($"Space: {reservation.ReservationSpaceName}");
-            Console.WriteLine($"Reserved For: {reservation.ReservationReservedFor}");
-            Console.WriteLine($"Attendees: {reservation.ReservationAttendees}");
-            Console.WriteLine($"Arrival Date: {reservation.ReservationStartDate}");
-            Console.WriteLine($"Depart Date: {reservation.ReservationEndDate}");
-            Console.WriteLine($"Total Cost: {reservation.TotalCost}");
+
+            reservationDAO.ReserveSpace(reservedDate, reservationEndDate, attendanceCount, reservingParty, spaceID);
+
+            
+
         }
+
     }
 }
