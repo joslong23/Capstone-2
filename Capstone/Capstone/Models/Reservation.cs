@@ -17,6 +17,8 @@ namespace Capstone.Models
 
         public string ReservationReservedFor { get; set; }
 
-        public bool IsValid { get; set; } = true;
+        public bool IsValidGuestCount { get; set; } = true;
+
+        public bool IsValidDate = true;
     }
 }

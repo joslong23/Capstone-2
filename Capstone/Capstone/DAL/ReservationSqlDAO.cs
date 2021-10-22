@@ -14,11 +14,11 @@ namespace Capstone.DAL
             "(start_date , end_date , number_of_attendees, reserved_for) " + 
             "VALUES (@start_date , @end_date, @number_of_attendees, @reserved_for); "+
             "SELECT @@IDENTITY;";
-        private readonly string SqlMaxOccupancyCheck = 
-            "SELECT s.max_occupancy "+
-            "FROM space s "+
+        private readonly string SqlMaxOccupancyCheck =
+            "SELECT s.max_occupancy " +
+            "FROM space s " +
             "INNER JOIN reservation r ON r.space_id = s.id  " +
-            "WHERE s.id = @space_id AND @number_of_attendees <= s.max_occupancy" ;
+            "WHERE s.id = @space_id;";
         private readonly string SqlDateCheck =
             "SELECT start_date , end_date FROM reservation WHERE space_id = @space_id AND @start_date NOT BETWEEN start_date AND end_date; ";
        
@@ -44,7 +44,7 @@ namespace Capstone.DAL
                     occupancyCheck.ExecuteReader();
                     if(maxOccupancy < numberOfGuests)
                     {
-                        reservation.IsValid = false;
+                        reservation.IsValidGuestCount = false;
                         return reservation;
                     }
 
@@ -54,7 +54,7 @@ namespace Capstone.DAL
                     DateTime reservedDate = Convert.ToDateTime(dateCheck.ExecuteScalar());
                     if(reservedDate == DateTime.MinValue)
                     {
-                        reservation.IsValid = false;
+                        reservation.IsValidDate = false;
                         return reservation ;
                     }
 
