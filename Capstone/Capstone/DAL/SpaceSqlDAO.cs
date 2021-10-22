@@ -59,9 +59,17 @@ namespace Capstone.DAL
                             {
                                 space.SpaceOpenFrom = Convert.ToInt32(reader["monthOpen"]);
                             }
+                            else
+                            {
+                                space.SpaceOpenFrom = 13;
+                            }
                             if (reader["monthClosed"] != DBNull.Value)
                             {
                                 space.SpaceOpenTo = Convert.ToInt32(reader["monthClosed"]);
+                            }
+                            else
+                            {
+                                space.SpaceOpenTo = 13;
                             }
 
                             result.Add(space);

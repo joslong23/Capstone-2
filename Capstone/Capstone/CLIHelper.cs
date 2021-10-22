@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Capstone
@@ -94,6 +95,11 @@ namespace Capstone
             while (string.IsNullOrEmpty(userInput));
 
             return userInput;
+        }
+
+        public static string GetAbbreviatedMonthName(int month)
+        {
+            return CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month);
         }
     }
 }

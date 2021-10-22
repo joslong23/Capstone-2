@@ -159,7 +159,11 @@ namespace Capstone
 
             foreach (Spaces space in spaces)
             {
-                Console.WriteLine($"#{space.SpaceId} ---- {space.SpaceName} ---- ---- {space.SpaceOpenFrom} ---- {space.SpaceOpenTo} ---- {space.SpaceDailyRate} ---- {space.SpaceMaxOccupancy}");
+                // Yup. I added a static method. Sue me. This pulls the abbreviated month name from an object property for display
+                string openMonth = CLIHelper.GetAbbreviatedMonthName(space.SpaceOpenFrom);
+                string closedMonth = CLIHelper.GetAbbreviatedMonthName(space.SpaceOpenTo);
+
+                Console.WriteLine($"#{space.SpaceId} ---- {space.SpaceName} ---- ---- {openMonth} ---- {closedMonth} ---- {space.SpaceDailyRate} ---- {space.SpaceMaxOccupancy}");
             }
             Console.WriteLine("\n");
             Console.WriteLine("What would you like to do next?");
