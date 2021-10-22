@@ -9,6 +9,10 @@ namespace Capstone.Models
 
         public int ReservationId { get; set; }
 
+        public string ReservationVenueName { get; set; }
+
+        public string ReservationSpaceName { get; set; }
+
         public int ReservationAttendees { get; set; }
 
         public DateTime ReservationStartDate { get; set; }
@@ -17,8 +21,8 @@ namespace Capstone.Models
 
         public string ReservationReservedFor { get; set; }
 
-        public bool IsValidGuestCount { get; set; } = true;
+        public decimal TotalCost { get; set; }
 
-        public bool IsValidDate = true;
+
     }
 }

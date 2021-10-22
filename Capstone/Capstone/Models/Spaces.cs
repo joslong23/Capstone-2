@@ -20,6 +20,8 @@ namespace Capstone.Models
         public decimal SpaceDailyRate { get; set; }
 
         public int SpaceMaxOccupancy { get; set; }
+
+        public int TotalCost { get; set; }
         
     }
 }
