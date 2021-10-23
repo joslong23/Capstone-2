@@ -36,7 +36,7 @@ namespace Capstone.IntegrationTests
             trans = new TransactionScope(); // BEGIN TRANSACTION
 
             // Get the SQL Script to run
-            string sql = File.ReadAllText("setup.sql");
+            string sql = File.ReadAllText("test-script.sql");
 
             // Execute the script
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -70,6 +70,20 @@ namespace Capstone.IntegrationTests
                 int count = Convert.ToInt32(cmd.ExecuteScalar());
 
                 return count;
+            }
+        }
+
+      
+
+        protected string GetRowName(string columnName, string table)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"SELECT {columnName} FROM {table}", conn);
+                string result = Convert.ToString(cmd.ExecuteScalar());
+
+                return result;
             }
         }
     }

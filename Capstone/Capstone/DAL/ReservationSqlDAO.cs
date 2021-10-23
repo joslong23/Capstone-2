@@ -55,7 +55,7 @@ namespace Capstone.DAL
                 {
                     conn.Open();
 
-                    SqlCommand command = new SqlCommand(SqlDebug, conn);
+                    SqlCommand command = new SqlCommand(SqlAvailableSpaceList, conn);
                     command.Parameters.AddWithValue("@venue_id", venueID);
                     command.Parameters.AddWithValue("@start_date", "2021-10-15");
                     command.Parameters.AddWithValue("@end_date", "2021-10-20");
