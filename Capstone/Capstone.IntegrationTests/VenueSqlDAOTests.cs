@@ -18,7 +18,7 @@ namespace Capstone.IntegrationTests
             IEnumerable<Venue> result = dao.GetAllVenues();
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(15, result.Count());
+            Assert.AreEqual(1, result.Count());
 
         }
         [TestMethod]
