@@ -60,7 +60,7 @@ namespace Capstone
                         GetAllVenues();
                         SelectVenue();
                         break;
-                  
+
                     case Command_Quit:
                         Console.WriteLine("Thank you for using Excelsior Venues");
                         return;
@@ -82,16 +82,16 @@ namespace Capstone
 
         private void GetAllVenues()
         {
-           List<Venue> venues = venueDAO.GetAllVenues();
-             
-           if (venues.Count > 0)
-           {
-                foreach(Venue ven in venues)
+            List<Venue> venues = venueDAO.GetAllVenues();
+
+            if (venues.Count > 0)
+            {
+                foreach (Venue ven in venues)
                 {
                     Console.WriteLine($"{ven.VenueId}) {ven.VenueName} ");
                 }
-                Console.WriteLine();
-           }
+
+            }
             else
             {
                 Console.WriteLine("*** No Results ***");
@@ -100,22 +100,31 @@ namespace Capstone
 
         private void SelectVenue()
         {
-            string venueID = CLIHelper.GetString("Which Venue would you like to view? ");
-            int intValue;
-            List<Venue> venues  = venueDAO.GetAllVenues();
+            bool keepRunning = true;
 
-            if (venueID.Contains("r") || venueID.Contains("R")) 
+            while (keepRunning)
             {
-                return;
-            }
-            else
-            {
-                intValue = int.Parse(venueID);
-                foreach(Venue ven in venues)
+
+                Console.WriteLine(" R) Return to Previous Screen \n");
+                string venueID = CLIHelper.GetString("Which Venue would you like to view? ");
+                int intValue;
+                List<Venue> venues = venueDAO.GetAllVenues();
+
+                if (venueID.Contains("r") || venueID.Contains("R"))
                 {
-                    if(intValue == ven.VenueId)
+                    keepRunning = false;
+                    return;
+                }
+                else
+                {
+                    int.TryParse(venueID, out intValue);
+                    foreach (Venue ven in venues)
                     {
-                        DisplayVenueDetails(ven);
+                        if (intValue == ven.VenueId)
+                        {
+                            DisplayVenueDetails(ven);
+                            GetAllVenues();
+                        }
                     }
                 }
             }
@@ -123,6 +132,7 @@ namespace Capstone
 
         private void DisplayVenueDetails(Venue venue)
         {
+            Console.WriteLine();
             Console.WriteLine($"{venue.VenueName}");
             Console.WriteLine($"Location: {venue.VenueCity}, {venue.VenueState}");
             Console.WriteLine($"Categories: {venue.VenueCategory}");
@@ -136,13 +146,9 @@ namespace Capstone
             Console.WriteLine("1) View Spaces");
             Console.WriteLine("2) Search for Reservation");
             Console.WriteLine("R) Return to Previous Screen");
-            Console.WriteLine();
+            string input = Console.ReadLine();
 
-            string input = CLIHelper.GetString("");
-
-            int intValue;
-
-            if (input.Contains("r") || input.Contains("R"))
+            if (!input.Contains("1"))
             {
                 return;
             }
@@ -150,38 +156,41 @@ namespace Capstone
             {
                 ViewSpaces(venue.VenueId);
             }
-
         }
 
         private void ViewSpaces(int venueID)
         {
+            bool keepGoing = true;
+
             List<Spaces> spaces = spaceDAO.GetVenueSpaces(venueID);
 
             Console.WriteLine("Name---- ---- ---- Open ---- Close ---- Daily Rate ---- Max. Occupancy");
 
             foreach (Spaces space in spaces)
             {
-                // Yup. I added a static method. Sue me. This pulls the abbreviated month name from an object property for display
+
                 string openMonth = CLIHelper.GetAbbreviatedMonthName(space.SpaceOpenFrom);
                 string closedMonth = CLIHelper.GetAbbreviatedMonthName(space.SpaceOpenTo);
 
                 Console.WriteLine($"#{space.SpaceId} ---- {space.SpaceName} ---- ---- {openMonth} ---- {closedMonth} ---- {space.SpaceDailyRate} ---- {space.SpaceMaxOccupancy}");
             }
-            Console.WriteLine("\n");
-            Console.WriteLine("What would you like to do next?");
-            Console.WriteLine("    1) Reserve a Space \n    R) Return to Previous Screen ");
-
-            string input = CLIHelper.GetString("");
-
-
-            if (input.Contains("r") || input.Contains("R"))
+            
+            while (keepGoing)
             {
-                return;
-            }
-            else if (input == "1")
-            {
-                int space = spaces.First().SpaceId;
-                ReserveSpace(venueID);
+                Console.WriteLine("\n");
+                Console.WriteLine("What would you like to do next?");
+                Console.WriteLine("1) Reserve a Space \nR) Return to Previous Screen ");
+                string input = Console.ReadLine();
+
+                if (!input.Contains("1"))
+                {
+                    keepGoing = false;
+                    return;
+                }
+                else if (input == "1")
+                {
+                    ReserveSpace(venueID);
+                }
             }
         }
 
@@ -216,23 +225,29 @@ namespace Capstone
                 Console.WriteLine($"{space.SpaceId}    {space.SpaceName}    {space.SpaceDailyRate}    {space.SpaceMaxOccupancy}    {isAccesible}    {space.TotalCost}");
             }
 
-            int spaceID = CLIHelper.GetInteger("Which space would you like to reserve (enter 0 to cancel)? ");
+            int spaceID = CLIHelper.GetInteger("Which space would you like to reserve (enter 0 to cancel)?");
+
+            if (spaceID == 0)
+            {
+                Console.WriteLine();
+                return;
+            }
+
 
             string reservingParty = CLIHelper.GetString("Who is the reserving Person or Party?: ");
 
-            Reservation reservation = reservationDAO.MakeReservation(reservedDate, reservationEndDate, attendanceCount, daysNeeded, venueID, reservingParty);
+            Reservation reservation = reservationDAO.MakeReservation(reservedDate, reservationEndDate, attendanceCount, daysNeeded, spaceID, reservingParty);
 
-            Console.WriteLine("Thank you for submitting your reservation! The dedtails for your event are listed below:");
+            Console.WriteLine("\nThank you for submitting your reservation! The details for your event are listed below:");
             Console.WriteLine("\n");
             Console.WriteLine($"Confirmation #: {reservation.ReservationId}");
             Console.WriteLine($"Venue: {reservation.ReservationVenueName}");
             Console.WriteLine($"Space: {reservation.ReservationSpaceName}");
             Console.WriteLine($"Reserved For: {reservation.ReservationReservedFor}");
             Console.WriteLine($"Attendees: {reservation.ReservationAttendees}");
-            Console.WriteLine($"Arrival Date: {reservation.ReservationStartDate}");
-            Console.WriteLine($"Depart Date: {reservation.ReservationEndDate}");
+            Console.WriteLine($"Arrival Date: {reservation.ReservationStartDate.ToShortDateString()}");
+            Console.WriteLine($"Depart Date: {reservation.ReservationEndDate.ToShortDateString()}");
             Console.WriteLine($"Total Cost: {reservation.TotalCost}");
         }
-
     }
 }
