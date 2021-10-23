@@ -10,7 +10,10 @@ DELETE FROM state
 INSERT INTO state (abbreviation , name)
 VALUES ('NM', 'New Mexico')
 
+INSERT INTO state (abbreviation , name)
+VALUES ('NM', 'New Mexico')
 SET IDENTITY_INSERT city ON
+
 INSERT INTO city (id, name, state_abbreviation)
 VALUES (1 , 'Albequreque' , 'NM')
 SET IDENTITY_INSERT city OFF
