@@ -21,7 +21,7 @@ namespace Capstone.Models
 
         public int SpaceMaxOccupancy { get; set; }
 
-        public int TotalCost { get; set; }
+        public decimal TotalCost { get; set; }
         
     }
 }

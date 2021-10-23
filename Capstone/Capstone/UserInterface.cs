@@ -79,7 +79,9 @@ namespace Capstone
             Console.WriteLine("1) List Venues");
             Console.WriteLine("Q) Quit Program");
         }
-
+        /// <summary>
+        /// Write out every venue to the console
+        /// </summary>
         private void GetAllVenues()
         {
             List<Venue> venues = venueDAO.GetAllVenues();
@@ -90,14 +92,15 @@ namespace Capstone
                 {
                     Console.WriteLine($"{ven.VenueId}) {ven.VenueName} ");
                 }
-
             }
             else
             {
                 Console.WriteLine("*** No Results ***");
             }
         }
-
+        /// <summary>
+        /// Obtain user input to select a venue
+        /// </summary>
         private void SelectVenue()
         {
             bool keepRunning = true;
@@ -129,7 +132,10 @@ namespace Capstone
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="venue"></param>
         private void DisplayVenueDetails(Venue venue)
         {
             Console.WriteLine();
@@ -137,10 +143,7 @@ namespace Capstone
             Console.WriteLine($"Location: {venue.VenueCity}, {venue.VenueState}");
             Console.WriteLine($"Categories: {venue.VenueCategory}");
             Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Description: ");
             Console.WriteLine($"{venue.VenueDescription}");
-            Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("What would you like to do next?");
             Console.WriteLine("1) View Spaces");
@@ -164,7 +167,7 @@ namespace Capstone
 
             List<Spaces> spaces = spaceDAO.GetVenueSpaces(venueID);
 
-            Console.WriteLine("Name---- ---- ---- Open ---- Close ---- Daily Rate ---- Max. Occupancy");
+            Console.WriteLine("{0, 10} {1, 25} {2, 16} {3, 20} {4, 19}", "Name", "Open", "Close", "Daily Rate", "Max. Occupancy" );
 
             foreach (Spaces space in spaces)
             {
@@ -172,12 +175,13 @@ namespace Capstone
                 string openMonth = CLIHelper.GetAbbreviatedMonthName(space.SpaceOpenFrom);
                 string closedMonth = CLIHelper.GetAbbreviatedMonthName(space.SpaceOpenTo);
 
-                Console.WriteLine($"#{space.SpaceId} ---- {space.SpaceName} ---- ---- {openMonth} ---- {closedMonth} ---- {space.SpaceDailyRate} ---- {space.SpaceMaxOccupancy}");
+                Console.WriteLine("{0, -5} {1, -25} {2, -15} {3, -15} {4, -15:C} {5, -15}", $"#{space.SpaceId}", $"{space.SpaceName}", $"{openMonth}", $"{closedMonth}", space.SpaceDailyRate, $"{space.SpaceMaxOccupancy}");
             }
-            
+
+            Console.WriteLine();
+
             while (keepGoing)
             {
-                Console.WriteLine("\n");
                 Console.WriteLine("What would you like to do next?");
                 Console.WriteLine("1) Reserve a Space \nR) Return to Previous Screen ");
                 string input = Console.ReadLine();
@@ -206,9 +210,12 @@ namespace Capstone
             int attendanceCount = CLIHelper.GetInteger("How many guests will be attending?: ");
 
             List<Spaces> availableSpaces = reservationDAO.GetAvailableReservations(reservedDate, reservationEndDate, daysNeeded, attendanceCount, venueID);
-
+            
+            Console.WriteLine();
             Console.WriteLine("The following spaces are available based on your needs: ");
-
+            Console.WriteLine();
+            Console.WriteLine("{0, -15} {1, -25} {2, -15} {3, -15} {4, -15} {5, -15}", "Space #", "Name", "Daily Rate", "Max Occup.", "Accessible?", "Total Cost");
+            
             foreach (Spaces space in availableSpaces)
             {
                 string isAccesible;
@@ -221,10 +228,9 @@ namespace Capstone
                 {
                     isAccesible = "No";
                 }
-
-                Console.WriteLine($"{space.SpaceId}    {space.SpaceName}    {space.SpaceDailyRate}    {space.SpaceMaxOccupancy}    {isAccesible}    {space.TotalCost}");
+                Console.WriteLine("{0, -15} {1, -25} {2, -15:C} {3, -15} {4, -15} {5, -15:C}", space.SpaceId,    space.SpaceName,    space.SpaceDailyRate,    space.SpaceMaxOccupancy,    isAccesible,    space.TotalCost);
             }
-
+            Console.WriteLine();
             int spaceID = CLIHelper.GetInteger("Which space would you like to reserve (enter 0 to cancel)?");
 
             if (spaceID == 0)
@@ -239,15 +245,16 @@ namespace Capstone
             Reservation reservation = reservationDAO.MakeReservation(reservedDate, reservationEndDate, attendanceCount, daysNeeded, spaceID, reservingParty);
 
             Console.WriteLine("\nThank you for submitting your reservation! The details for your event are listed below:");
-            Console.WriteLine("\n");
-            Console.WriteLine($"Confirmation #: {reservation.ReservationId}");
-            Console.WriteLine($"Venue: {reservation.ReservationVenueName}");
-            Console.WriteLine($"Space: {reservation.ReservationSpaceName}");
-            Console.WriteLine($"Reserved For: {reservation.ReservationReservedFor}");
-            Console.WriteLine($"Attendees: {reservation.ReservationAttendees}");
-            Console.WriteLine($"Arrival Date: {reservation.ReservationStartDate.ToShortDateString()}");
-            Console.WriteLine($"Depart Date: {reservation.ReservationEndDate.ToShortDateString()}");
-            Console.WriteLine($"Total Cost: {reservation.TotalCost}");
+            Console.WriteLine();
+            Console.WriteLine("{0, 15} {1, -27}", "Confirmation #:", reservation.ReservationId);
+            Console.WriteLine("{0, 15} {1, -27}", "Venue:", reservation.ReservationVenueName);
+            Console.WriteLine("{0, 15} {1, -27}", "Space:", reservation.ReservationSpaceName);
+            Console.WriteLine("{0, 15} {1, -27}", "Reserved For:", reservation.ReservationReservedFor);
+            Console.WriteLine("{0, 15} {1, -27}", "Attendees:", reservation.ReservationAttendees);
+            Console.WriteLine("{0, 15} {1, -27}", "Arrival Date:", reservation.ReservationStartDate.ToShortDateString());
+            Console.WriteLine("{0, 15} {1, -27}", "depart Date:", reservation.ReservationEndDate.ToShortDateString());
+            Console.WriteLine("{0, 15} {1, -27:C}", "Total Cost:", reservation.TotalCost);
+            Console.WriteLine();
         }
     }
 }

@@ -28,9 +28,9 @@ namespace Capstone.DAL
             "FROM space s " +
             "LEFT OUTER JOIN reservation r ON r.space_id = s.id " +
             "INNER JOIN venue v ON v.id = s.venue_id " +
-            "WHERE v.id =1 AND (r.start_date != @start_date AND r.start_date != @end_date AND r.end_date != @end_date) " +
+            "WHERE v.id = @venue_id AND (r.start_date != @start_date AND r.start_date != @end_date AND r.end_date != @end_date) " +
             "AND r.end_date != @end_date " +
-            "AND r.start_date NOT BETWEEN @start_date AND @end_date OR r.start_date IS NULL AND v.id= 1";
+            "AND r.start_date NOT BETWEEN @start_date AND @end_date OR r.start_date IS NULL AND v.id = @venue_id";
 
         public ReservationSqlDAO(string connectionString)
         {
@@ -65,7 +65,7 @@ namespace Capstone.DAL
                             space.SpaceIsAccessible = Convert.ToBoolean(reader["is_accessible"]);
                             space.SpaceDailyRate = Convert.ToDecimal(reader["daily_rate"]);
                             space.SpaceMaxOccupancy = Convert.ToInt32(reader["max_occupancy"]);
-                            space.TotalCost *= daysNeeded;
+                            space.TotalCost = space.SpaceDailyRate * daysNeeded;
                         }
                         result.Add(space);
                     }
