@@ -6,7 +6,6 @@ namespace Capstone.Models
 {
     public class Reservation
     {
-
         public int ReservationId { get; set; }
 
         public string ReservationVenueName { get; set; }

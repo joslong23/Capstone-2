@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Capstone.DAL
 {
-    public class ReservationSqlDAO
+    public class ReservationSqlDAO : Reservation
     {
         private readonly string connectionString;
 
@@ -28,14 +28,15 @@ namespace Capstone.DAL
         /// This sql displays available spaces based upon user input. Examines dates and max occupancy
         /// </summary>
         private readonly string SqlAvailableSpaceList =
-           "SELECT DISTINCT " +
+          "SELECT TOP 5 " +
             "s.id , s.name, s.daily_rate, s.max_occupancy, s.is_accessible " +
             "FROM space s " +
-            "LEFT OUTER JOIN reservation r ON r.space_id = s.id " +
-            "INNER JOIN venue v ON v.id = s.venue_id " +
-            "WHERE v.id = @venue_id AND (r.start_date != @start_date AND r.start_date != @end_date AND r.end_date != @end_date) " +
-            "AND r.end_date != @end_date " +
-            "AND r.start_date NOT BETWEEN @start_date AND @end_date OR r.start_date IS NULL AND v.id = @venue_id";
+            "WHERE s.venue_id = @venue_id AND s.id NOT IN " +
+            "(SELECT s.id FROM reservation r " +
+            "JOIN space s on s.id = r.space_id " +
+            "WHERE s.venue_id = @venue_id AND r.end_date >= @start_date AND r.start_date <= @end_date " +
+            "AND s.venue_id= @venue_id) AND((MONTH(@start_date)> s.open_from AND MONTH(@start_date) <s.open_to) OR s.open_from IS NULL) " +
+            "AND s.max_occupancy >= @number_of_attendees;";
         public ReservationSqlDAO(string connectionString)
         {
             this.connectionString = connectionString;
@@ -51,7 +52,7 @@ namespace Capstone.DAL
         /// <param name="guestCount"></param>
         /// <param name="venueID"></param>
         /// <returns></returns>
-        public List<Spaces> GetAvailableReservations(DateTime startDate, DateTime endDate, int daysNeeded, int guestCount, int venueID)
+       /* public List<Spaces> GetAvailableReservations(DateTime startDate, DateTime endDate, int daysNeeded, int guestCount, int venueID)
         {
             List<Spaces> result = new List<Spaces>();
             try
@@ -89,7 +90,7 @@ namespace Capstone.DAL
             }
 
             return result;
-        }
+        }*/
         /// <summary>
         /// Inserts a new reservation into the database and returns an instance of a reservation to be used to display to the user
         /// </summary>

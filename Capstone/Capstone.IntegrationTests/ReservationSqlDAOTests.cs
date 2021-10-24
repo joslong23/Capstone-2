@@ -27,18 +27,7 @@ namespace Capstone.IntegrationTests
             Assert.AreEqual("The Saints", results.ReservationReservedFor);
             Assert.IsTrue(results.ReservationId > 1);
         }
-        [TestMethod]
-        public void ListAvailableReservationsShouldDisplayReservationAvailability()
-        {
-            // Arrange
-            ReservationSqlDAO dao = new ReservationSqlDAO(this.ConnectionString);
-            //Act
-            IEnumerable<Spaces> result =dao.GetAvailableReservations(DateTime.Parse("10/21/2021"), DateTime.Parse("10/26/2021"), 5, 10, 1);
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count());
-         }
-
+   
     }
 
 }

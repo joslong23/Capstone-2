@@ -202,7 +202,7 @@ namespace Capstone
 
             int attendanceCount = CLIHelper.GetInteger("How many guests will be attending?: ");
 
-            List<Spaces> availableSpaces = reservationDAO.GetAvailableReservations(reservedDate, reservationEndDate, daysNeeded, attendanceCount, venueID); // pulling a list to be displayed with a for loop
+            List<Spaces> availableSpaces = spaceDAO.GetAvailableReservations(reservedDate, reservationEndDate, daysNeeded, attendanceCount, venueID); // pulling a list to be displayed with a for loop
             
             Console.WriteLine();
             Console.WriteLine("The following spaces are available based on your needs: ");
