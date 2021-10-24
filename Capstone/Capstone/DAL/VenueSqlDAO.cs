@@ -17,7 +17,7 @@ namespace Capstone.DAL
             "SELECT " +
             "v.id, " +
             "v.name, "+ 
-            "STRING_AGG(ISNULL(c.name, ' '), ', ') AS categoryName, " +
+            "STRING_AGG(ISNULL(c.name, ' '), ', ') AS categoryName, " + // This combines two columns for the purpose of formatting user display
             "v.description, " + "cy.name AS cityName, "+ 
             "s.name AS stateName "+
             "FROM " +
@@ -60,7 +60,6 @@ namespace Capstone.DAL
             try
             {
                 CreateVenueList(venues);
-
             }
             catch (SqlException ex)
             {

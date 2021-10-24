@@ -24,11 +24,6 @@ namespace Capstone
     public class UserInterface
     {
         const string Command_ListVenues = "1";
-        const string Command_SelectVenues = "2";
-        const string Command_ViewSpaces = "1";
-        const string Command_SearchForReservation = "2";
-        const string Command_ReturnToPreviousScreen = "R";
-        const string Command_ReserveSpace = "1";
         const string Command_Quit = "Q";
 
         private readonly VenueSqlDAO venueDAO;
@@ -45,7 +40,6 @@ namespace Capstone
 
         public void Run()
         {
-
             PrintMainMenu();
 
             while (true)
@@ -68,7 +62,6 @@ namespace Capstone
                         Console.WriteLine("The command provided was not a valid command, please try again.");
                         break;
                 }
-
                 PrintMainMenu();
             }
         }
@@ -133,7 +126,7 @@ namespace Capstone
             }
         }
         /// <summary>
-        /// 
+        /// Displays details about a user selected venue.
         /// </summary>
         /// <param name="venue"></param>
         private void DisplayVenueDetails(Venue venue)
@@ -205,11 +198,11 @@ namespace Capstone
 
             int daysNeeded = CLIHelper.GetInteger("How many days will you be reserving?: ");
 
-            DateTime reservationEndDate = reservedDate.AddDays(daysNeeded);
+            DateTime reservationEndDate = reservedDate.AddDays(daysNeeded); // Calculating end date by adding to reserve date
 
             int attendanceCount = CLIHelper.GetInteger("How many guests will be attending?: ");
 
-            List<Spaces> availableSpaces = reservationDAO.GetAvailableReservations(reservedDate, reservationEndDate, daysNeeded, attendanceCount, venueID);
+            List<Spaces> availableSpaces = reservationDAO.GetAvailableReservations(reservedDate, reservationEndDate, daysNeeded, attendanceCount, venueID); // pulling a list to be displayed with a for loop
             
             Console.WriteLine();
             Console.WriteLine("The following spaces are available based on your needs: ");

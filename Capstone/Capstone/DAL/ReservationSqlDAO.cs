@@ -10,6 +10,9 @@ namespace Capstone.DAL
     {
         private readonly string connectionString;
 
+        /// <summary>
+        /// This string is used to add a reservation to the database
+        /// </summary>
         private readonly string SqlReservation = "INSERT INTO reservation " +
             "(space_id, start_date, end_date, number_of_attendees, reserved_for) " +
             "VALUES (@space_id, @start_date , @end_date, @number_of_attendees, @reserved_for); " +
@@ -21,7 +24,9 @@ namespace Capstone.DAL
             "INNER JOIN space s ON s.id = r.space_id " +
             "INNER JOIN venue v ON v.id = s.venue_id " +
             "WHERE r.reservation_id = @reservation_id";
-        
+        /// <summary>
+        /// This sql displays available spaces based upon user input. Examines dates and max occupancy
+        /// </summary>
         private readonly string SqlAvailableSpaceList =
            "SELECT DISTINCT " +
             "s.id , s.name, s.daily_rate, s.max_occupancy, s.is_accessible " +
@@ -31,14 +36,21 @@ namespace Capstone.DAL
             "WHERE v.id = @venue_id AND (r.start_date != @start_date AND r.start_date != @end_date AND r.end_date != @end_date) " +
             "AND r.end_date != @end_date " +
             "AND r.start_date NOT BETWEEN @start_date AND @end_date OR r.start_date IS NULL AND v.id = @venue_id";
-
         public ReservationSqlDAO(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
 
-
+        /// <summary>
+        /// Create a list of spaces where a user can place reservation based upon the given info
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="daysNeeded"></param>
+        /// <param name="guestCount"></param>
+        /// <param name="venueID"></param>
+        /// <returns></returns>
         public List<Spaces> GetAvailableReservations(DateTime startDate, DateTime endDate, int daysNeeded, int guestCount, int venueID)
         {
             List<Spaces> result = new List<Spaces>();
@@ -78,7 +90,16 @@ namespace Capstone.DAL
 
             return result;
         }
-
+        /// <summary>
+        /// Inserts a new reservation into the database and returns an instance of a reservation to be used to display to the user
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="guestCount"></param>
+        /// <param name="daysNeeded"></param>
+        /// <param name="spaceID"></param>
+        /// <param name="reservationName"></param>
+        /// <returns></returns>
         public Reservation MakeReservation(DateTime startDate, DateTime endDate, int guestCount, int daysNeeded, int spaceID, string reservationName)
         {
             Reservation reservation = new Reservation();

@@ -21,7 +21,7 @@ namespace Capstone.Models
 
         public string ReservationReservedFor { get; set; }
 
-        public decimal TotalCost { get; set; }
+        public decimal TotalCost { get; set; } // This is not held in the data base but needs to be displayed to the user
 
 
     }

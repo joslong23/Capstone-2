@@ -24,8 +24,6 @@ namespace Capstone.DAL
             "INNER JOIN space sp ON sp.venue_id = v.id " +
             "WHERE sp.venue_id = @venue_id";
 
-
-
         public SpaceSqlDAO(string connectionString)
         {
             this.connectionString = connectionString;
@@ -55,13 +53,13 @@ namespace Capstone.DAL
                             space.SpaceDailyRate = Convert.ToDecimal(reader["daily_rate"]);
                             space.SpaceMaxOccupancy = Convert.ToInt32(reader["max_occupancy"]);
 
-                            if (reader["monthOpen"] != DBNull.Value)
+                            if (reader["monthOpen"] != DBNull.Value) // Sets the date if the row in the data base has one
                             {
                                 space.SpaceOpenFrom = Convert.ToInt32(reader["monthOpen"]);
                             }
                             else
                             {
-                                space.SpaceOpenFrom = 13;
+                                space.SpaceOpenFrom = 13; // 13 is the value for a null month. Or it isn't null? Unclear. Either way, it displays nothing when called
                             }
                             if (reader["monthClosed"] != DBNull.Value)
                             {
