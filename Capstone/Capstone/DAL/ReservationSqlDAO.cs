@@ -42,55 +42,6 @@ namespace Capstone.DAL
             this.connectionString = connectionString;
         }
 
-
-        /// <summary>
-        /// Create a list of spaces where a user can place reservation based upon the given info
-        /// </summary>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="daysNeeded"></param>
-        /// <param name="guestCount"></param>
-        /// <param name="venueID"></param>
-        /// <returns></returns>
-       /* public List<Spaces> GetAvailableReservations(DateTime startDate, DateTime endDate, int daysNeeded, int guestCount, int venueID)
-        {
-            List<Spaces> result = new List<Spaces>();
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(this.connectionString))
-                {
-                    conn.Open();
-
-                    SqlCommand command = new SqlCommand(SqlAvailableSpaceList, conn);
-                    command.Parameters.AddWithValue("@venue_id", venueID);
-                    command.Parameters.AddWithValue("@start_date", startDate);
-                    command.Parameters.AddWithValue("@end_date", endDate);
-                    command.Parameters.AddWithValue("@number_of_attendees", guestCount);
-
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Spaces space = new Spaces();
-                        {
-                            space.SpaceId = Convert.ToInt32(reader["id"]);
-                            space.SpaceName = Convert.ToString(reader["name"]);
-                            space.SpaceIsAccessible = Convert.ToBoolean(reader["is_accessible"]);
-                            space.SpaceDailyRate = Convert.ToDecimal(reader["daily_rate"]);
-                            space.SpaceMaxOccupancy = Convert.ToInt32(reader["max_occupancy"]);
-                            space.TotalCost = space.SpaceDailyRate * daysNeeded;
-                        }
-                        result.Add(space);
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine("Could not obtain data: " + ex.Message);
-            }
-
-            return result;
-        }*/
         /// <summary>
         /// Inserts a new reservation into the database and returns an instance of a reservation to be used to display to the user
         /// </summary>
